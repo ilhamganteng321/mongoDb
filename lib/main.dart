@@ -3,12 +3,17 @@ import 'package:tugas_besar/LoginPage.dart';
 import 'package:tugas_besar/db_transaction.dart';
 import './DatabaseHelper.dart';
 import './db_stock.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:tugas_besar/firebase_options.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // Memanggil fungsi initDatabase sebelum menjalankan aplikasi
+  WidgetsFlutterBinding
+      .ensureInitialized(); // Memanggil fungsi initDatabase sebelum menjalankan aplikasi
   runApp(MyApp());
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 }
-
 
 class MyApp extends StatelessWidget {
   @override
@@ -69,7 +74,7 @@ class _SplashScreenState extends State<SplashScreen>
               SizedBox(height: 20),
               Text(
                 textAlign: TextAlign.center,
-                'Aplikasi Penjualan Komputer\ndan\nalat elektronik',
+                'MyPetShop',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
