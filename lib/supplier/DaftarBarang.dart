@@ -93,79 +93,109 @@ class _FirebaseDataScreenState extends State<FirebaseDataScreen> {
         child: Icon(Icons.add),
       ),
       appBar: AppBar(
-        title: Text('Firebase Data Display'),
+        title: Text('Supplier'),
+        centerTitle: true,
       ),
       body: _isLoading
           ? Center(
         child: CircularProgressIndicator(),
       )
-          : GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 8.0,
-          mainAxisSpacing: 8.0,
-        ),
-        itemCount: _data.length,
-        itemBuilder: (context, index) {
-          final data = _data[index];
-
-          return SingleChildScrollView(
-            child: Card(
-              child: InkWell(
-                onTap: () {},
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Text('nama :'+
-                            data['nama'],
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text('alamat :'+
-                            data['alamat'],
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text('jabatan :'+
-                            data['jabatan'],
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),Text('email :'+
-                            data['email'],
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),Text('nomor_telepon :'+
-                            data['nomor_telepon'],
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                    ListTile(
-                      leading: IconButton(
-                        onPressed: () {
-                          // Pilih data yang akan diedit
-                          editData(context, data);
-                        },
-                        icon: Icon(Icons.edit),
-                      ),
-                      trailing: IconButton(
-                        onPressed: () {
-                          _deleteProduct(data['id_supplier']).then((_) {
-                            setState(() {
-                              fetchData();
-                            });
-                          });
-                        },
-                        icon: Icon(Icons.delete),
-                      ),
-                    ),
-                  ],
-                ),
+          : Padding(
+            padding: const EdgeInsets.all(10),
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 8.0,
+                mainAxisSpacing: 8.0,
               ),
-            ),
-          );
-        },
+              itemCount: _data.length,
+              itemBuilder: (context, index) {
+                final data = _data[index];
+
+                return InkWell(
+                  onTap: () {},
+                  child: Stack(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15.0),
+                          image: DecorationImage(
+                            image: NetworkImage('https://picsum.photos/id/$index/200/300'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(15.0),
+                              bottomRight: Radius.circular(15.0),
+                            ),
+                            color: Colors.black.withOpacity(0.5),
+                          ),
+                          padding: EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Nama: ${data['nama']}',
+                                style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                              ),
+                              Text(
+                                'Alamat: ${data['alamat']}',
+                                style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                              ),
+                              Text(
+                                'Jabatan: ${data['jabatan']}',
+                                style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                              ),
+                              Text(
+                                'Email: ${data['email']}',
+                                style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                              ),
+                              Text(
+                                'Nomor Telepon: ${data['nomor_telepon']}',
+                                style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        child: Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                // Pilih data yang akan diedit
+                                editData(context, data);
+                              },
+                              icon: Icon(Icons.edit, color: Colors.white),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                _deleteProduct(data['id_supplier']).then((_) {
+                                  setState(() {
+                                    fetchData();
+                                  });
+                                });
+                              },
+                              icon: Icon(Icons.delete, color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            )
+
       ),
     );
   }

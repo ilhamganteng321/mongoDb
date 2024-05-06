@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../models/customer.dart';
 import 'add_penitipan_hewan.dart';
 import 'edit.dart';
 
@@ -13,11 +14,14 @@ class PenitipanHewanScreen extends StatefulWidget {
 class _PenitipanHewanScreenState extends State<PenitipanHewanScreen> {
   List<dynamic> _penitipanHewan = [];
   bool _isLoading = false;
+  List<Customer> customers = [];
+
 
   @override
   void initState() {
     super.initState();
     fetchData();
+    _fetchCustomers();
   }
 
   Future<void> fetchData() async {
@@ -49,6 +53,43 @@ class _PenitipanHewanScreenState extends State<PenitipanHewanScreen> {
       }
     } else {
       throw Exception('Failed to load data');
+    }
+  }
+  Future<void> _fetchCustomers() async {
+    final String baseUrl =
+        'https://tugas-besar-7e24d-default-rtdb.firebaseio.com/data_pelanggan.json';
+    final url = Uri.parse(baseUrl);
+
+    try {
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic>? data = json.decode(response.body);
+
+        if (data != null) {
+          List<Customer> fetchedCustomers = [];
+          data.forEach((customerId, customerData) {
+            if (customerData is Map<String, dynamic>) {
+              fetchedCustomers.add(Customer.fromJson({
+                'id': customerId,
+                ...customerData,
+              }));
+            }
+          });
+
+          setState(() {
+            customers = fetchedCustomers;
+          });
+        } else {
+          throw Exception(
+              'Failed to load customers: Response body is null');
+        }
+      } else {
+        throw Exception(
+            'Failed to load customers: Status code ${response.statusCode}');
+      }
+    } catch (error) {
+      throw Exception('Failed to load customers: $error');
     }
   }
 
@@ -95,37 +136,41 @@ class _PenitipanHewanScreenState extends State<PenitipanHewanScreen> {
           ? Center(
         child: CircularProgressIndicator(),
       )
-          : ListView.builder(
-        itemCount: _penitipanHewan.length,
-        itemBuilder: (context, index) {
-          final penitipan = _penitipanHewan[index];
-          return ExpansionTile(
-            trailing: IconButton(icon: Icon(Icons.delete),onPressed: (){
-              deleteData(penitipan['id']);
-            },),
-            title: Text('Nama Hewan: ${penitipan['nama_hewan']}'),
-            leading: IconButton(
-              icon: Icon(Icons.edit),
-              onPressed: () {
-                _editPenitipanHewan(penitipan['id']);
-              },
-            ),
-            children: [
-              Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('ID Pelanggan: ${penitipan['id_pelanggan']}'),
-                    Text('Tanggal Penitipan: ${penitipan['tanggal_penitipan']}'),
-                    Text('Tanggal Pengambilan: ${penitipan['tanggal_pengambilan']}'),
-                  ],
-                ),
+          : Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ListView.builder(
+                    itemCount: _penitipanHewan.length,
+                    itemBuilder: (context, index) {
+            final penitipan = _penitipanHewan[index];
+            final pelanggan = index < customers.length ? customers[index] : null;
+            return ExpansionTile(
+              trailing: IconButton(icon: Icon(Icons.delete),onPressed: (){
+                deleteData(penitipan['id']);
+              },),
+              title: Text('Nama Hewan: ${penitipan['nama_hewan']}'),
+              leading: IconButton(
+                icon: Icon(Icons.edit),
+                onPressed: () {
+                  _editPenitipanHewan(penitipan['id']);
+                },
               ),
-            ],
-          );
-        },
-      ),
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Nama Pelanggan: ${pelanggan?.nama}'), // Menggunakan nama pelanggan dari objek Customer
+                      Text('Tanggal Penitipan: ${penitipan['tanggal_penitipan']}'),
+                      Text('Tanggal Pengambilan: ${penitipan['tanggal_pengambilan']}'),
+                    ],
+                  ),
+                ),
+              ],
+            );
+                    },
+                  ),
+          ),
     );
   }
 
@@ -144,3 +189,4 @@ class _PenitipanHewanScreenState extends State<PenitipanHewanScreen> {
     });
   }
 }
+
