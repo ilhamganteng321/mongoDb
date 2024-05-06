@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:tugas_besar/DaftarBarang.dart';
+import 'package:tugas_besar/karyawan/ada_karyawan.dart';
+import 'package:tugas_besar/karyawan/karyawan_list.dart';
+import 'package:tugas_besar/penitipan_hewan/Penitipan_list.dart';
+import 'package:tugas_besar/supplier/DaftarBarang.dart';
 import 'package:tugas_besar/ProductActivity.dart';
-import 'package:tugas_besar/ReportActivity.dart';
-import 'package:tugas_besar/TransactionActivity.dart';
+import 'package:tugas_besar/pelanggan/ReportActivity.dart';
+import 'package:tugas_besar/produk/TransactionActivity.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -51,36 +54,43 @@ class _HomePageState extends State<HomePage> {
             ),
             ListTile(
               leading: Icon(Icons.money, color: isActive ? Colors.white : Colors.black,),
-              title: Text('Transaction' , style: TextStyle(color: isActive ? Colors.white : Colors.black),),
+              title: Text('Produk' , style: TextStyle(color: isActive ? Colors.white : Colors.black),),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => AddTransactionForm(),
+                  builder: (context) => ProductList(),
                 ));
               },
             ),
             ListTile(
               leading: Icon(Icons.report,color: isActive ? Colors.white : Colors.black,),
-              title: Text('Report' , style: TextStyle(color: isActive ? Colors.white : Colors.black),),
+              title: Text('Pelanggan' , style: TextStyle(color: isActive ? Colors.white : Colors.black),),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => DaftarTransaksi(),
+                  builder: (context) => Customers(),
                 ));
               },
             ),
             ListTile(
               leading: Icon(Icons.add_chart,color: isActive ? Colors.white : Colors.black,),
-              title: Text('Product' , style: TextStyle(color: isActive ? Colors.white : Colors.black),),
+              title: Text('Karyawan' , style: TextStyle(color: isActive ? Colors.white : Colors.black),),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => AddBarangForm(),
+                  builder: (context) => KaryawanScreen(),
                 ));
               },
             ),
             ListTile(
               leading: Icon(Icons.add, color: isActive ? Colors.white : Colors.black,),
-              title: Text('List' , style: TextStyle(color: isActive ? Colors.white : Colors.black),),
+              title: Text('Supplier' , style: TextStyle(color: isActive ? Colors.white : Colors.black),),
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => DaftarBarang(),));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => FirebaseDataScreen(),));
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add_alarm, color: isActive ? Colors.white : Colors.black,),
+              title: Text('Penitipan Hewan' , style: TextStyle(color: isActive ? Colors.white : Colors.black),),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => PenitipanHewanScreen(),));
               },
             )
           ],

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import './HomePage.dart';
-import 'package:tugas_besar/DaftarBarang.dart';
+import 'package:tugas_besar/supplier/DaftarBarang.dart';
 import 'package:tugas_besar/HomePage.dart';
 
 class AddBarangForm extends StatefulWidget {

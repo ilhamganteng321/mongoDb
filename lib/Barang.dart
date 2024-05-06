@@ -10,6 +10,6 @@ class Barang {
     required this.id,
     required this.nama,
     required this.merek,
-    required this.harga,
+    required this.harga, required a, required alamat, required alamatlamat,
   });
 }
