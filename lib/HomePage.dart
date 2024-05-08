@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tugas_besar/karyawan/ada_karyawan.dart';
 import 'package:tugas_besar/karyawan/karyawan_list.dart';
 import 'package:tugas_besar/penitipan_hewan/Penitipan_list.dart';
+import 'package:tugas_besar/penjualan/add_penjualan.dart';
+import 'package:tugas_besar/penjualan/penjualan_list.dart';
 import 'package:tugas_besar/supplier/DaftarBarang.dart';
 import 'package:tugas_besar/ProductActivity.dart';
 import 'package:tugas_besar/pelanggan/ReportActivity.dart';
@@ -32,7 +34,10 @@ class _HomePageState extends State<HomePage> {
         ],
         backgroundColor: isActive ? Colors.white : Colors.black,
         centerTitle: true,
-        title: Text('Home Page', style: TextStyle(color: isActive ? Colors.black : Colors.white),),
+        title: Text(
+          'Home',
+          style: TextStyle(color: isActive ? Colors.black : Colors.white),
+        ),
       ),
       drawer: Drawer(
         shadowColor: Colors.white,
@@ -53,8 +58,14 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.money, color: isActive ? Colors.white : Colors.black,),
-              title: Text('Produk' , style: TextStyle(color: isActive ? Colors.white : Colors.black),),
+              leading: Icon(
+                Icons.money,
+                color: isActive ? Colors.white : Colors.black,
+              ),
+              title: Text(
+                'Produk',
+                style: TextStyle(color: isActive ? Colors.white : Colors.black),
+              ),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => ProductList(),
@@ -62,8 +73,14 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             ListTile(
-              leading: Icon(Icons.report,color: isActive ? Colors.white : Colors.black,),
-              title: Text('Pelanggan' , style: TextStyle(color: isActive ? Colors.white : Colors.black),),
+              leading: Icon(
+                Icons.report,
+                color: isActive ? Colors.white : Colors.black,
+              ),
+              title: Text(
+                'Pelanggan',
+                style: TextStyle(color: isActive ? Colors.white : Colors.black),
+              ),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => Customers(),
@@ -71,8 +88,14 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             ListTile(
-              leading: Icon(Icons.add_chart,color: isActive ? Colors.white : Colors.black,),
-              title: Text('Karyawan' , style: TextStyle(color: isActive ? Colors.white : Colors.black),),
+              leading: Icon(
+                Icons.add_chart,
+                color: isActive ? Colors.white : Colors.black,
+              ),
+              title: Text(
+                'Karyawan',
+                style: TextStyle(color: isActive ? Colors.white : Colors.black),
+              ),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => KaryawanScreen(),
@@ -80,17 +103,48 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             ListTile(
-              leading: Icon(Icons.add, color: isActive ? Colors.white : Colors.black,),
-              title: Text('Supplier' , style: TextStyle(color: isActive ? Colors.white : Colors.black),),
+              leading: Icon(
+                Icons.add,
+                color: isActive ? Colors.white : Colors.black,
+              ),
+              title: Text(
+                'Supplier',
+                style: TextStyle(color: isActive ? Colors.white : Colors.black),
+              ),
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => FirebaseDataScreen(),));
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => FirebaseDataScreen(),
+                ));
               },
             ),
             ListTile(
-              leading: Icon(Icons.add_alarm, color: isActive ? Colors.white : Colors.black,),
-              title: Text('Penitipan Hewan' , style: TextStyle(color: isActive ? Colors.white : Colors.black),),
+              leading: Icon(
+                Icons.add_alarm,
+                color: isActive ? Colors.white : Colors.black,
+              ),
+              title: Text(
+                'Penitipan Hewan',
+                style: TextStyle(color: isActive ? Colors.white : Colors.black),
+              ),
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => PenitipanHewanScreen(),));
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => PenitipanHewanScreen(),
+                ));
+              },
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.home,
+                color: isActive ? Colors.white : Colors.black,
+              ),
+              title: Text(
+                'Penjualan',
+                style: TextStyle(color: isActive ? Colors.white : Colors.black),
+              ),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => SalesDataTable(),
+                ));
               },
             )
           ],
@@ -99,8 +153,9 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: Text(
           textAlign: TextAlign.center,
-          'Halaman Home\nMclaren Lu warna apa bos',
-          style: TextStyle(fontSize: 24,color: isActive? Colors.white : Colors.black),
+          'Tiada Hari Tanpa\nNgodding',
+          style: TextStyle(
+              fontSize: 24, color: isActive ? Colors.white : Colors.black),
         ),
       ),
       backgroundColor: isActive ? Colors.black : Colors.white,

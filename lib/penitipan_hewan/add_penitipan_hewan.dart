@@ -49,8 +49,7 @@ class _FormTambahPenitipanHewanState extends State<FormTambahPenitipanHewan> {
             customers = fetchedCustomers;
           });
         } else {
-          throw Exception(
-              'Failed to load customers: Response body is null');
+          throw Exception('Failed to load customers: Response body is null');
         }
       } else {
         throw Exception(
@@ -113,14 +112,14 @@ class _FormTambahPenitipanHewanState extends State<FormTambahPenitipanHewan> {
             SizedBox(height: 20),
             _isLoading
                 ? Center(
-              child: CircularProgressIndicator(),
-            )
+                    child: CircularProgressIndicator(),
+                  )
                 : ElevatedButton(
-              onPressed: () {
-                _tambahData();
-              },
-              child: Text('Tambah Data'),
-            ),
+                    onPressed: () {
+                      _tambahData();
+                    },
+                    child: Text('Tambah Data'),
+                  ),
           ],
         ),
       ),
@@ -163,7 +162,7 @@ class _FormTambahPenitipanHewanState extends State<FormTambahPenitipanHewan> {
     String? selectedPelangganId;
     customers.forEach((customer) {
       if (customer.nama == _selectedPelanggan) {
-        selectedPelangganId = customer.id;
+        selectedPelangganId = customer.nama;
       }
     });
 

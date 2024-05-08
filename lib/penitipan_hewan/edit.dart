@@ -39,7 +39,6 @@ class _FormEditPenitipanHewanState extends State<FormEditPenitipanHewan> {
     _tanggalPenitipanController.text = widget.initialTanggalPenitipan;
     _tanggalPengambilanController.text = widget.initialTanggalPengambilan;
     super.initState();
-
   }
 
   Future<void> _fetchCustomers() async {
@@ -68,8 +67,7 @@ class _FormEditPenitipanHewanState extends State<FormEditPenitipanHewan> {
             customers = fetchedCustomers;
           });
         } else {
-          throw Exception(
-              'Failed to load customers: Response body is null');
+          throw Exception('Failed to load customers: Response body is null');
         }
       } else {
         throw Exception(
@@ -132,14 +130,14 @@ class _FormEditPenitipanHewanState extends State<FormEditPenitipanHewan> {
             SizedBox(height: 20),
             _isLoading
                 ? Center(
-              child: CircularProgressIndicator(),
-            )
+                    child: CircularProgressIndicator(),
+                  )
                 : ElevatedButton(
-              onPressed: () {
-                _editData();
-              },
-              child: Text('Simpan Perubahan'),
-            ),
+                    onPressed: () {
+                      _editData();
+                    },
+                    child: Text('Simpan Perubahan'),
+                  ),
           ],
         ),
       ),
@@ -193,7 +191,7 @@ class _FormEditPenitipanHewanState extends State<FormEditPenitipanHewan> {
       'tanggal_pengambilan': _tanggalPengambilanController.text,
     };
 
-    final response = await http.put(
+    final response = await http.patch(
       Uri.parse(
           'https://tugas-besar-7e24d-default-rtdb.firebaseio.com/penitipan_hewan/${widget.penitipanId}.json'),
       body: json.encode(updatedData),
