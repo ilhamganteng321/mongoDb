@@ -22,7 +22,8 @@ class _CustomersState extends State<Customers> {
   }
 
   Future<void> _fetchCustomers() async {
-    final String baseUrl = 'https://tugas-besar-7e24d-default-rtdb.firebaseio.com/data_pelanggan.json';
+    final String baseUrl =
+        'https://tugas-besar-7e24d-default-rtdb.firebaseio.com/data_pelanggan.json';
     final url = Uri.parse(baseUrl);
 
     try {
@@ -32,7 +33,8 @@ class _CustomersState extends State<Customers> {
         final Map<String, dynamic>? data = json.decode(response.body);
 
         if (data != null) {
-          print('Received data: $data'); // Tampilkan data yang diterima dari server
+          print(
+              'Received data: $data'); // Tampilkan data yang diterima dari server
           List<Customer> fetchedCustomers = [];
           data.forEach((customerId, customerData) {
             if (customerData is Map<String, dynamic>) {
@@ -51,13 +53,13 @@ class _CustomersState extends State<Customers> {
           throw Exception('Failed to load customers: Response body is null');
         }
       } else {
-        throw Exception('Failed to load customers: Status code ${response.statusCode}');
+        throw Exception(
+            'Failed to load customers: Status code ${response.statusCode}');
       }
     } catch (error) {
       throw Exception('Failed to load customers: $error');
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +67,11 @@ class _CustomersState extends State<Customers> {
       floatingActionButton: IconButton(
         icon: Icon(Icons.add),
         onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddCustomerForm(),)).then((_) {
+          Navigator.of(context)
+              .push(MaterialPageRoute(
+            builder: (context) => AddCustomerForm(),
+          ))
+              .then((_) {
             setState(() {
               _fetchCustomers();
             });
@@ -78,81 +84,95 @@ class _CustomersState extends State<Customers> {
       ),
       body: customers.isEmpty
           ? Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircularProgressIndicator(
-              semanticsLabel: ("Memuat"),
-              semanticsValue: "memuat",
-            ),
-            Text("memuat")
-          ],
-        ),
-      )
-          : Padding(
-        padding: EdgeInsets.all(8.0),
-        child: DataTable(
-          columns: [
-            DataColumn(label: Text('Nama')),
-            DataColumn(label: Text('Alamat')),
-            DataColumn(label: Text('Email')),
-            DataColumn(label: Text('Nomor Telepon')),
-            DataColumn(label: Text('Tanggal')),
-            DataColumn(label: Text('aksi'))
-          ],
-          rows: customers.map((customer) {
-            return DataRow(
-              cells: [
-                DataCell(Text(customer.nama)),
-                DataCell(Text(customer.alamat)),
-                DataCell(Text(customer.email)),
-                DataCell(Text(customer.nomorTelepon)),
-                DataCell(Text(customer.tanggal)),
-                DataCell(
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      DropdownButton<String>(
-                        value: null,
-                        onChanged: (value) {
-                          if (value == 'update') {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => UpdateCustomerForm(customerId: customer.id),)).then((_){
-                              setState(() {
-                                _fetchCustomers();
-                              });
-                            });
-                          } else if (value == 'delete') {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return DeleteCustomerDialog(customerId: customer.id);
-                              },
-                            ).then((_) {
-                              setState(() {
-                                _fetchCustomers();
-                              });
-                            });
-                          }
-                        },
-                        items: [
-                          DropdownMenuItem(
-                            value: 'update',
-                            child: Text('Update'),
-                          ),
-                          DropdownMenuItem(
-                            value: 'delete',
-                            child: Text('Delete'),
+              child: CircularProgressIndicator(),
+            )
+          : SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+            child: Center(
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: DataTable(
+                    dataRowColor: MaterialStatePropertyAll(Colors.blue),
+                    headingTextStyle: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.white),
+                    headingRowColor: MaterialStatePropertyAll(Colors.blue),
+                    dataTextStyle: TextStyle(color: Colors.white),
+                    columns: [
+                      DataColumn(label: Text('Nama')),
+                      DataColumn(label: Text('Alamat')),
+                      DataColumn(label: Text('Email')),
+                      DataColumn(label: Text('Nomor Telepon')),
+                      DataColumn(label: Text('Tanggal')),
+                      DataColumn(label: Text('aksi'))
+                    ],
+                    rows: customers.map((customer) {
+                      return DataRow(
+                        cells: [
+                          DataCell(Text(customer.nama)),
+                          DataCell(Text(customer.alamat)),
+                          DataCell(Text(customer.email)),
+                          DataCell(Text(customer.nomorTelepon)),
+                          DataCell(Text(customer.tanggal)),
+                          DataCell(
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                IconButton(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (context) => UpdateCustomerForm(
+                                            customerId: customer.id),
+                                      ))
+                                          .then((_) {
+                                        setState(() {
+                                          _fetchCustomers();
+                                        });
+                                      });
+                                    },
+                                    icon: Icon(
+                                      Icons.edit,
+                                      color: Colors.white,
+                                    )),
+                                Text(
+                                  "Edit",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                IconButton(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (context) =>
+                                            DeleteCustomerDialog(
+                                                customerId: customer.id),
+                                      ))
+                                          .then((_) {
+                                        setState(() {
+                                          _fetchCustomers();
+                                        });
+                                      });
+                                    },
+                                    icon: Icon(
+                                      Icons.delete,
+                                      color: Colors.white,
+                                    )),
+                                Text(
+                                  "Hapus",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
-                      ),
-                    ],
+                      );
+                    }).toList(),
                   ),
                 ),
-              ],
-            );
-          }).toList(),
-        ),
-      ),
+              ),
+          ),
     );
   }
 }
@@ -174,7 +194,8 @@ class _DeleteCustomerDialogState extends State<DeleteCustomerDialog> {
       _isLoading = true;
     });
 
-    final String baseUrl = 'https://tugas-besar-7e24d-default-rtdb.firebaseio.com/data_pelanggan/${widget.customerId}.json';
+    final String baseUrl =
+        'https://tugas-besar-7e24d-default-rtdb.firebaseio.com/data_pelanggan/${widget.customerId}.json';
     final url = Uri.parse(baseUrl);
 
     try {
@@ -183,14 +204,17 @@ class _DeleteCustomerDialogState extends State<DeleteCustomerDialog> {
       if (response.statusCode == 200) {
         Navigator.of(context).pop();
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Data berhasil di hapus'),
-          duration: Duration(seconds: 3),),
+          SnackBar(
+            content: Text('Data berhasil di hapus'),
+            duration: Duration(seconds: 3),
+          ),
         );
         setState(() {
           Navigator.of(context).pop();
         });
       } else {
-        throw Exception('Failed to delete customer: Status code ${response.statusCode}');
+        throw Exception(
+            'Failed to delete customer: Status code ${response.statusCode}');
       }
     } catch (error) {
       throw Exception('Failed to delete customer: $error');
@@ -215,9 +239,7 @@ class _DeleteCustomerDialogState extends State<DeleteCustomerDialog> {
         ),
         TextButton(
           onPressed: _isLoading ? null : _deleteCustomer,
-          child: _isLoading
-              ? CircularProgressIndicator()
-              : Text('Delete'),
+          child: _isLoading ? CircularProgressIndicator() : Text('Delete'),
         ),
       ],
     );

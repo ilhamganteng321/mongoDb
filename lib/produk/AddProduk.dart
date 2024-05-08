@@ -18,7 +18,8 @@ class _AddProductScreenState extends State {
   bool isActive = true;
 
   Future<void> _loadProducts() async {
-    final url = 'https://tugas-besar-7e24d-default-rtdb.firebaseio.com/data_produk.json';
+    final url =
+        'https://tugas-besar-7e24d-default-rtdb.firebaseio.com/data_produk.json';
 
     try {
       final response = await http.get(Uri.parse(url));
@@ -56,7 +57,8 @@ class _AddProductScreenState extends State {
   }
 
   Future<void> _addProduct() async {
-    final url = 'https://tugas-besar-7e24d-default-rtdb.firebaseio.com/data_produk.json';
+    final url =
+        'https://tugas-besar-7e24d-default-rtdb.firebaseio.com/data_produk.json';
     try {
       final response = await http.post(
         Uri.parse(url),
@@ -84,8 +86,10 @@ class _AddProductScreenState extends State {
         Navigator.of(context).pop();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("Berhasil ditambahkan"),
-            duration: Duration(seconds: 3),
+            content: Text("Data berhasil ditambahkan"),
+            showCloseIcon: true,
+            backgroundColor: Colors.blue,
+            closeIconColor: Colors.white,
           ),
         );
         _loadProducts();
@@ -128,28 +132,35 @@ class _AddProductScreenState extends State {
           children: <Widget>[
             TextField(
               controller: _namaController,
-              decoration: InputDecoration(labelText: 'Nama Produk', icon: Icon(Icons.add_chart)),
+              decoration: InputDecoration(
+                  labelText: 'Nama Produk', icon: Icon(Icons.add_chart)),
             ),
             TextField(
               controller: _deskripsiController,
-              decoration: InputDecoration(labelText: 'Deskripsi', icon: Icon(Icons.description)),
+              decoration: InputDecoration(
+                  labelText: 'Deskripsi', icon: Icon(Icons.description)),
             ),
             TextField(
               controller: _hargaController,
-              decoration: InputDecoration(labelText: 'Harga', icon: Icon(Icons.price_change)),
+              decoration: InputDecoration(
+                  labelText: 'Harga', icon: Icon(Icons.price_change)),
               keyboardType: TextInputType.number,
             ),
             TextField(
               controller: _kategoriController,
-              decoration: InputDecoration(labelText: 'Kategori Produk',icon: Icon(Icons.description_sharp)),
+              decoration: InputDecoration(
+                  labelText: 'Kategori Produk',
+                  icon: Icon(Icons.description_sharp)),
             ),
             TextField(
               controller: _kodeController,
-              decoration: InputDecoration(labelText: 'Kode Produk',icon: Icon(Icons.password)),
+              decoration: InputDecoration(
+                  labelText: 'Kode Produk', icon: Icon(Icons.password)),
             ),
             TextField(
               controller: _stokController,
-              decoration: InputDecoration(labelText: 'Stok', icon: Icon(Icons.area_chart)),
+              decoration: InputDecoration(
+                  labelText: 'Stok', icon: Icon(Icons.area_chart)),
               keyboardType: TextInputType.number,
             ),
             SizedBox(height: 20.0),

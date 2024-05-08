@@ -19,7 +19,8 @@ class _ProductListState extends State<ProductList> {
   }
 
   Future<void> _loadProducts() async {
-    final url = 'https://tugas-besar-7e24d-default-rtdb.firebaseio.com/data_produk.json';
+    final url =
+        'https://tugas-besar-7e24d-default-rtdb.firebaseio.com/data_produk.json';
 
     try {
       final response = await http.get(Uri.parse(url));
@@ -76,62 +77,98 @@ class _ProductListState extends State<ProductList> {
         child: Icon(Icons.add),
       ),
       appBar: AppBar(
+        centerTitle: true,
         title: Text('Product List'),
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
           : products.isEmpty
-          ? Center(child: Text('No products available'))
-          : ListView.builder(
-        itemCount: products.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Dismissible(
-            key: Key(products[index]['id']),
-            onDismissed: (direction) {
-              _deleteProduct(index);
-            },
-            background: Container(
-              color: Colors.red,
-              alignment: Alignment.centerRight,
-              padding: EdgeInsets.only(right: 20.0),
-              child: Icon(
-                Icons.delete,
-                color: Colors.white,
-              ),
-            ),
-            child: ListTile(
-              onTap: () {
-                _showProductDetails(context, products[index]);
-              },
-              leading: IconButton(
-                onPressed: () {
-                  _showUpdateProductScreen(context, index);
-                },
-                icon: Icon(Icons.edit, color: Colors.blue),
-              ),
-              title: Text(products[index]['nama_produk']),
-              subtitle: Text(products[index]['deskripsi']),
-              trailing: IconButton(
-                onPressed: () {
-                  _deleteProduct(index);
-                },
-                icon: Icon(Icons.delete, color: Colors.blue),
-              ),
-            ),
-          );
-        },
-      ),
+              ? Center(child: Text('No products available'))
+              : ListView.builder(
+                  itemCount: products.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Dismissible(
+                      key: Key(products[index]['id']),
+                      onDismissed: (direction) {
+                        _deleteProduct(index);
+                      },
+                      background: Container(
+                        color: Colors.red,
+                        alignment: Alignment.centerRight,
+                        padding: EdgeInsets.only(right: 20.0),
+                        child: Icon(
+                          Icons.delete,
+                          color: Colors.white,
+                        ),
+                      ),
+                      child: ListTile(
+                        hoverColor: Colors.blue.withOpacity(0.3),
+                        iconColor: Colors.white,
+                        mouseCursor: SystemMouseCursors.click,
+                        selectedColor: Colors.white,
+                        onTap: () {
+                          _showProductDetails(context, products[index]);
+                        },
+                        leading: IconButton(
+                          onPressed: () {
+                            _showUpdateProductScreen(context, index);
+                          },
+                          icon: Icon(Icons.edit, color: Colors.blue),
+                        ),
+                        title: Text(products[index]['nama_produk']),
+                        subtitle: Text(products[index]['deskripsi']),
+                        trailing: IconButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text(
+                                    'KONFIRMASI',
+                                  ),
+                                  content: Text(
+                                      'Apa anda yakin ingin menghapus item ini?'),
+                                  actions: <Widget>[
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        // Do something when cancel button is pressed
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('Cancel'),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        // Do something when delete button is pressed
+                                        Navigator.of(context).pop();
+                                        // Add your delete functionality here
+                                        _deleteProduct(index);
+                                      },
+                                      child: Text('Delete'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          icon: Icon(Icons.delete, color: Colors.blue),
+                        ),
+                      ),
+                    );
+                  },
+                ),
     );
   }
 
   void _showUpdateProductScreen(BuildContext context, int index) {
-    Navigator.of(context).push(
+    Navigator.of(context)
+        .push(
       MaterialPageRoute(
         builder: (context) => UpdateProductScreen(
           product: products[index],
         ),
       ),
-    ).then((_) {
+    )
+        .then((_) {
       // Setelah kembali dari layar pembaruan produk, muat ulang produk
       _loadProducts();
     });
@@ -139,7 +176,8 @@ class _ProductListState extends State<ProductList> {
 
   void _deleteProduct(int index) async {
     final productId = products[index]['id'];
-    final url = 'https://tugas-besar-7e24d-default-rtdb.firebaseio.com/data_produk/$productId.json';
+    final url =
+        'https://tugas-besar-7e24d-default-rtdb.firebaseio.com/data_produk/$productId.json';
 
     final response = await http.delete(Uri.parse(url));
 
@@ -150,7 +188,9 @@ class _ProductListState extends State<ProductList> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text("Data berhasil dihapus"),
-          duration: Duration(seconds: 3),
+          showCloseIcon: true,
+          backgroundColor: Colors.blue,
+          closeIconColor: Colors.white,
         ),
       );
     } else {
@@ -201,7 +241,6 @@ class _ProductListState extends State<ProductList> {
   }
 }
 
-
 class UpdateProductScreen extends StatefulWidget {
   final Map<String, dynamic> product;
 
@@ -234,7 +273,8 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
   List<dynamic> products = [];
   bool isActive = true;
   Future<void> _loadProducts() async {
-    final url = 'https://tugas-besar-7e24d-default-rtdb.firebaseio.com/data_produk.json';
+    final url =
+        'https://tugas-besar-7e24d-default-rtdb.firebaseio.com/data_produk.json';
 
     try {
       final response = await http.get(Uri.parse(url));
@@ -273,7 +313,8 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
 
   void _updateProduct() async {
     final productId = widget.product['id'];
-    final url = 'https://tugas-besar-7e24d-default-rtdb.firebaseio.com/data_produk/$productId.json';
+    final url =
+        'https://tugas-besar-7e24d-default-rtdb.firebaseio.com/data_produk/$productId.json';
 
     try {
       final response = await http.patch(
@@ -292,14 +333,20 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
         // Jika produk berhasil diperbarui, kembali ke halaman sebelumnya
         Navigator.of(context).pop();
         ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Data berhasil diperbarui"), duration: Duration(seconds: 3),)
+          SnackBar(
+            content: Text("Data berhasil diupdate"),
+            showCloseIcon: true,
+            backgroundColor: Colors.blue,
+            closeIconColor: Colors.white,
+          ),
         );
 
         // Memuat ulang produk setelah memperbarui produk
         _loadProducts().then((_) {
           // Perbarui variabel products di dalam widget _ProductListState
           setState(() {
-            products = List.from(products); // Membuat salinan baru dari daftar produk
+            products =
+                List.from(products); // Membuat salinan baru dari daftar produk
           });
         });
       } else {
@@ -325,7 +372,6 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -339,28 +385,35 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
           children: <Widget>[
             TextField(
               controller: _namaController,
-              decoration: InputDecoration(labelText: 'Nama Produk', icon: Icon(Icons.add_chart)),
+              decoration: InputDecoration(
+                  labelText: 'Nama Produk', icon: Icon(Icons.add_chart)),
             ),
             TextField(
               controller: _deskripsiController,
-              decoration: InputDecoration(labelText: 'Deskripsi', icon: Icon(Icons.description)),
+              decoration: InputDecoration(
+                  labelText: 'Deskripsi', icon: Icon(Icons.description)),
             ),
             TextField(
               controller: _hargaController,
-              decoration: InputDecoration(labelText: 'Harga', icon: Icon(Icons.price_change)),
+              decoration: InputDecoration(
+                  labelText: 'Harga', icon: Icon(Icons.price_change)),
               keyboardType: TextInputType.number,
             ),
             TextField(
               controller: _kategoriController,
-              decoration: InputDecoration(labelText: 'Kategori Produk',icon: Icon(Icons.description_sharp)),
+              decoration: InputDecoration(
+                  labelText: 'Kategori Produk',
+                  icon: Icon(Icons.description_sharp)),
             ),
             TextField(
               controller: _kodeController,
-              decoration: InputDecoration(labelText: 'Kode Produk',icon: Icon(Icons.password)),
+              decoration: InputDecoration(
+                  labelText: 'Kode Produk', icon: Icon(Icons.password)),
             ),
             TextField(
               controller: _stokController,
-              decoration: InputDecoration(labelText: 'Stok', icon: Icon(Icons.area_chart)),
+              decoration: InputDecoration(
+                  labelText: 'Stok', icon: Icon(Icons.area_chart)),
               keyboardType: TextInputType.number,
             ),
             SizedBox(height: 20.0),
@@ -388,4 +441,3 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
     super.dispose();
   }
 }
-
